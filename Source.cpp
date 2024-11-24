@@ -22,18 +22,48 @@ struct Vertex
 
 GLuint InitShader(const char* vertex_shader_file_name, const char* fragment_shader_file_name);
 
-const GLint WIDTH = 600, HEIGHT = 600;
+const GLint WIDTH = 800, HEIGHT = 800;
 GLuint VBO, BasiceprogramId;
-DrawingMode Current_DrawingMode = DrawingMode::Lines;
-
+DrawingMode Current_DrawingMode = DrawingMode::FilledTriangle;
+float triangleSize = 0;
 void CreateTriangle()
 {
-	GLfloat TriangleVertices[] =
-	{
-		-1,-1,0,
+	GLfloat TriangleVertices[180];
+	//=
+	//{
+	//	0,0,0,
+	//	0,0,0,
+	//	0,0,0,
+	//	0,0,0,
+	//	0,0,0,
+	//	0,0,0
+	//	/*
+	/*	-1,-1,0,
 		1,-1,0,
-		0,1,0
-	};
+		1,0,0,
+		1,1,0,
+		0,1,0,
+		-1,1,0*/
+	//	-2,1,0,
+	//	-2,0,0,
+	//	-2,-2,0,
+	//	-1,-3,0,
+	//	1,-3,0,
+	//	1,-1,0,
+	//	-1,0,0*/
+	//};
+	triangleSize = (sizeof(TriangleVertices) / 12);
+	TriangleVertices[0] = 0;
+	TriangleVertices[1] = 0;
+	TriangleVertices[2] = 0;
+	for (int i = 3; i < triangleSize * 3; i += 3)
+	{
+		TriangleVertices[i] = cos((2 * 3.14 * (i - 3)) / ((triangleSize * 3)-6));
+		TriangleVertices[i + 1] = sin((2 * 3.14 * (i - 3)) / ((triangleSize * 3) - 6));
+		TriangleVertices[i + 2] = 0;
+
+
+	}
 
 	// create buffer object
 	glGenBuffers(1, &VBO);
@@ -41,7 +71,7 @@ void CreateTriangle()
 	// binding buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(TriangleVertices), TriangleVertices, GL_STATIC_DRAW);
-
+	
 	// shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 	glEnableVertexAttribArray(0);
@@ -128,7 +158,7 @@ void Render()
 		break;
 	}
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLE_FAN, 0, triangleSize);
 }
 
 float theta = 0;
@@ -145,7 +175,7 @@ int main()
 {
 	sf::ContextSettings context;
 	context.depthBits = 24;
-	sf::Window window(sf::VideoMode(WIDTH, HEIGHT), "SFML works!", sf::Style::Close, context);
+	sf::Window window(sf::VideoMode(WIDTH, HEIGHT), "Computer Graphics", sf::Style::Close, context);
 
 	if (Init()) return 1;
 
@@ -180,7 +210,7 @@ int main()
 			}
 		}
 
-		Update();
+		//Update();
 		Render();
 
 		window.display();
