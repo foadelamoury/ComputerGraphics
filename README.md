@@ -1,2 +1,2 @@
-# ComputerGraphicsITI
+# Computer Graphics
  
