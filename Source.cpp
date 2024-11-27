@@ -47,14 +47,11 @@ void CreateTriangle()
 		vec3(0,1,0),vec3(1,0,0)
 	};
 
-	// create buffer object
 	glGenBuffers(1, &VBO_Triangle);
 
-	// binding buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_Triangle);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(TriangleVertices), TriangleVertices, GL_STATIC_DRAW);
 
-	// shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(GL_FLOAT), 0);
 	glEnableVertexAttribArray(0);
 
@@ -68,7 +65,6 @@ void BindTriangle()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_Triangle);
 
-	// shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(GL_FLOAT), 0);
 	glEnableVertexAttribArray(0);
 
@@ -141,18 +137,15 @@ void CreateCube()
 		5
 	};
 
-	// create VBO
 	glGenBuffers(1, &VBO_Cube);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO_Cube);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(cube_core_vertices), cube_core_vertices, GL_STATIC_DRAW);
 
-	// Index Buffer
 	glGenBuffers(1, &IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(vertices_Indeces), vertices_Indeces, GL_STATIC_DRAW);
 
-	// shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(vertex), 0);
 	glEnableVertexAttribArray(0);
 
@@ -228,7 +221,6 @@ int Init()
 float theta = 0;
 void Update()
 {
-	// add all tick code
 	theta += 0.016f;
 }
 
@@ -236,7 +228,6 @@ void DrawHuman()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Set polygon mode based on the current drawing mode
 	switch (Current_DrawingMode)
 	{
 	case Points:
@@ -308,7 +299,6 @@ void Render()
 		break;
 	}
 
-	// Only draw the human
 	DrawHuman();
 }
 
