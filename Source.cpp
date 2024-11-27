@@ -30,14 +30,11 @@ vector<int> noDraws = { 0 };
 vector<vec3> positions;
 void onMouseMove(int x, int y) {
 	if (canDraw) {
-		// Map mouse coordinates to OpenGL's normalized device coordinates
 		float normalizedX = (2.0f * x) / WIDTH - 1.0f;
-		float normalizedY = 1.0f - (2.0f * y) / HEIGHT; // Y-axis is flipped in OpenGL
+		float normalizedY = 1.0f - (2.0f * y) / HEIGHT; 
 
-		// Add the new position to the positions vector
 		positions.push_back(vec3(normalizedX, normalizedY, 0.0f));
 
-		// Update the VBO with the new positions
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * positions.size(), positions.data(), GL_DYNAMIC_DRAW);
 	}
 }
@@ -65,14 +62,11 @@ void CreateColoredTriangle()
 		0,1,0,1,0,0
 	};
 
-	// create buffer object
 	glGenBuffers(1, &VBO);
 
-	// binding buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(TriangleVertices), TriangleVertices, GL_STATIC_DRAW);
 
-	// shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(GL_FLOAT), 0);
 	glEnableVertexAttribArray(0);
 
@@ -108,7 +102,6 @@ int Init()
 
 	CompileShader("VS.glsl", "FS.glsl", BasiceprogramId);
 	Drawing();
-	//CreateColoredTriangle();
 
 	glClearColor(0, 0.5, 0.5, 1);
 
@@ -128,7 +121,6 @@ void Render()
 float theta = 0;
 void Update()
 {
-	// add all tick code
 	theta += 0.0001f;
 
 	GLuint Theta_Location = glGetUniformLocation(BasiceprogramId, "theta");
