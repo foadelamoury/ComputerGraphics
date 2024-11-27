@@ -3,18 +3,13 @@
 layout (location = 0) in vec4 vertex_position;
 layout (location = 1) in vec4 vertex_color;
 
-uniform float theta;
+uniform mat4 modelMat;
+uniform mat4 viewMat;
+uniform mat4 projMat;
 
 out vec4 frag_color;
 void main()
 {
-	//gl_Position = vertex_position;
-
-	float x = vertex_position.x * cos(theta) + vertex_position.y * sin(theta);
-	float y = -vertex_position.x * sin(theta) + vertex_position.y * cos(theta);
-	
-	gl_Position = vec4(x/4,y/4,vertex_position.z,1);
-
-	//frag_color = vertex_position;
+	gl_Position = projMat * viewMat * modelMat * vertex_position;
 	frag_color = vertex_color;
 }
