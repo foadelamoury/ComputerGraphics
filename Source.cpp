@@ -17,19 +17,15 @@ vector<vec3> positions;
 GLuint InitShader(const char* vertex_shader_file_name, const char* fragment_shader_file_name);
 
 void GenerateSierpinskiPoints(int iterations) {
-    // Define the vertices of the main triangle
     vec3 vertexA = vec3(-0.9f, -0.9f, 0.0f);
     vec3 vertexB = vec3(0.9f, -0.9f, 0.0f);
     vec3 vertexC = vec3(0.0f, 0.9f, 0.0f);
 
-    // Starting point (can be any random point inside the triangle)
     vec3 currentPoint = vec3(0.0f, 0.0f, 0.0f);
 
-    // Add points using the Chaos Game
     for (int i = 0; i < iterations; ++i) {
         int randomVertex = rand() % 3;
 
-        // Move halfway towards a random vertex
         if (randomVertex == 0) {
             currentPoint = (currentPoint + vertexA) * 0.5f;
         }
@@ -40,11 +36,9 @@ void GenerateSierpinskiPoints(int iterations) {
             currentPoint = (currentPoint + vertexC) * 0.5f;
         }
 
-        // Store the point
         positions.push_back(currentPoint);
     }
 
-    // Update the VBO
     glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * positions.size(), positions.data(), GL_DYNAMIC_DRAW);
 }
 
