@@ -22,62 +22,39 @@ struct Vertex
 
 GLuint InitShader(const char* vertex_shader_file_name, const char* fragment_shader_file_name);
 
-const GLint WIDTH = 800, HEIGHT = 800;
+const GLint WIDTH = 900, HEIGHT = 800;
 GLuint VBO, BasiceprogramId;
-DrawingMode Current_DrawingMode = DrawingMode::FilledTriangle;
-float triangleSize = 0;
-void CreateTriangle()
-{
-	GLfloat TriangleVertices[180];
-	//=
-	//{
-	//	0,0,0,
-	//	0,0,0,
-	//	0,0,0,
-	//	0,0,0,
-	//	0,0,0,
-	//	0,0,0
-	//	/*
-	/*	-1,-1,0,
-		1,-1,0,
-		1,0,0,
-		1,1,0,
-		0,1,0,
-		-1,1,0*/
-	//	-2,1,0,
-	//	-2,0,0,
-	//	-2,-2,0,
-	//	-1,-3,0,
-	//	1,-3,0,
-	//	1,-1,0,
-	//	-1,0,0*/
-	//};
-	triangleSize = (sizeof(TriangleVertices) / 12);
-	TriangleVertices[0] = 0;
-	TriangleVertices[1] = 0;
-	TriangleVertices[2] = 0;
-	for (int i = 3; i < triangleSize * 3; i += 3)
-	{
-		TriangleVertices[i] = cos((2 * 3.14 * (i - 3)) / ((triangleSize * 3)-6));
-		TriangleVertices[i + 1] = sin((2 * 3.14 * (i - 3)) / ((triangleSize * 3) - 6));
-		TriangleVertices[i + 2] = 0;
+DrawingMode Current_DrawingMode = DrawingMode::Lines;
+GLboolean canDraw = false;
+vector<int> noDraws = { 0 };
+vector<vec3> positions;
+void onMouseMove(int x, int y) {
+	if (canDraw) {
+		// Map mouse coordinates to OpenGL's normalized device coordinates
+		float normalizedX = (2.0f * x) / WIDTH - 1.0f;
+		float normalizedY = 1.0f - (2.0f * y) / HEIGHT; // Y-axis is flipped in OpenGL
 
+		// Add the new position to the positions vector
+		positions.push_back(vec3(normalizedX, normalizedY, 0.0f));
 
+		// Update the VBO with the new positions
+		glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * positions.size(), positions.data(), GL_DYNAMIC_DRAW);
 	}
-
-	// create buffer object
-	glGenBuffers(1, &VBO);
-
-	// binding buffer object
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(TriangleVertices), TriangleVertices, GL_STATIC_DRAW);
-	
-	// shader
-	glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
-	glEnableVertexAttribArray(0);
-
-	//GLuint Vertex_Position_Location = glGetAttribLocation(BasiceprogramId, "vertex_position");
 }
+
+void Drawing() {
+	glClearColor(1.0, 1.0, 1.0, 0.0); 
+	glLineWidth(5);
+
+	glGenBuffers(1, &VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * positions.capacity(), nullptr, GL_DYNAMIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(vec3), nullptr);
+	glEnableVertexAttribArray(0);
+}
+
 
 void CreateColoredTriangle()
 {
@@ -130,7 +107,7 @@ int Init()
 	cout << "\tGLSL:" << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 
 	CompileShader("VS.glsl", "FS.glsl", BasiceprogramId);
-	CreateTriangle();
+	Drawing();
 	//CreateColoredTriangle();
 
 	glClearColor(0, 0.5, 0.5, 1);
@@ -141,24 +118,11 @@ int Init()
 void Render()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	switch (Current_DrawingMode)
+	for (int i = 0; i < noDraws.size() - 1; i++)
 	{
-	case Points:
-		glPointSize(10);
-		glPolygonMode(GL_FRONT_AND_BACK, GL_POINT);
-		break;
-	case Lines:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		break;
-	case FilledTriangle:
-		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-		break;
-	default:
-		break;
+		glDrawArrays(GL_LINE_STRIP, noDraws[i], noDraws[i + 1] - noDraws[i]);
 	}
-
-	glDrawArrays(GL_TRIANGLE_FAN, 0, triangleSize);
+	glDrawArrays(GL_LINE_STRIP, noDraws[noDraws.size() - 1], positions.size() - noDraws[noDraws.size() - 1]);
 }
 
 float theta = 0;
@@ -174,46 +138,37 @@ void Update()
 int main()
 {
 	sf::ContextSettings context;
-	context.depthBits = 24;
-	sf::Window window(sf::VideoMode(WIDTH, HEIGHT), "Computer Graphics", sf::Style::Close, context);
+	context.depthBits = 24; 
+	sf::Window window(sf::VideoMode(WIDTH, HEIGHT), "I hear you paint houses", sf::Style::Close, context);
 
 	if (Init()) return 1;
 
-	while (window.isOpen())
-	{
+	while (window.isOpen()) {
 		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			switch (event.type)
-			{
-			case sf::Event::Closed:
-			{
+		while (window.pollEvent(event)) {
+			if (event.type == sf::Event::Closed) {
 				window.close();
-				break;
 			}
-			case sf::Event::KeyPressed:
-			{
-				if (event.key.code == sf::Keyboard::Num1)
-				{
-					Current_DrawingMode = DrawingMode::Points;
-				}
-				if (event.key.code == sf::Keyboard::Num2)
-				{
-					Current_DrawingMode = DrawingMode::Lines;
-				}
-				if (event.key.code == sf::Keyboard::Num3)
-				{
-					Current_DrawingMode = DrawingMode::FilledTriangle;
-				}
-				break;
+			else if (event.type == sf::Event::MouseButtonReleased) {
+				canDraw = false;
+				noDraws.push_back(positions.size());
 			}
+			else if (event.type == sf::Event::MouseButtonPressed) {
+				canDraw = true;
+				noDraws.push_back(positions.size());
+			}
+			else if (event.type == sf::Event::MouseMoved) {
+				onMouseMove(event.mouseMove.x, event.mouseMove.y);
 			}
 		}
 
-		//Update();
+		Update();
+
+		glClear(GL_COLOR_BUFFER_BIT);
 		Render();
 
 		window.display();
 	}
+
 	return 0;
 }
