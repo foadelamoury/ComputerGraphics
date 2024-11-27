@@ -213,11 +213,11 @@ int Init()
 	viewMatLoc = glGetUniformLocation(BasiceprogramId, "viewMat");
 	projMatLoc = glGetUniformLocation(BasiceprogramId, "projMat");
 
-	glm::mat4 viewMat = glm::lookAt(glm::vec3(0, 0, 3), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-	glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
+	 mat4 viewMat =  lookAt( vec3(0, 0, 3),  vec3(0, 0, 0),  vec3(0, 1, 0));
+	glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE,  value_ptr(viewMat));
 
-	glm::mat4 projMat = glm::perspectiveFov(60.0f, (float)WIDTH, (float)HEIGHT, 0.1f, 100.0f);
-	glUniformMatrix4fv(projMatLoc, 1, GL_FALSE, glm::value_ptr(projMat));
+	 mat4 projMat =  perspectiveFov(60.0f, (float)WIDTH, (float)HEIGHT, 0.1f, 100.0f);
+	glUniformMatrix4fv(projMatLoc, 1, GL_FALSE,  value_ptr(projMat));
 
 	glClearColor(0, 0.5, 0.5, 1);
 	glEnable(GL_DEPTH_TEST);
@@ -255,36 +255,36 @@ void DrawHuman()
 
 	BindCube();
 	GLsizei elementSize = 36;
-	glm::mat4 rotation = glm::rotate(theta, glm::vec3(0, 1, 0));
+	mat4 rotation = rotate(theta, vec3(0, 1, 0));
 
-	glm::mat4 ModelMat = rotation * glm::translate(glm::vec3(0, .75f, 0)) *
-		glm::scale(glm::vec3(0.25f, 0.25f, 0.25f));
-	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(ModelMat));
+	mat4 ModelMat = rotation *  translate( vec3(0, .75f, 0)) *
+		 scale( vec3(0.25f, 0.25f, 0.25f));
+	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE,  value_ptr(ModelMat));
 	glDrawElements(GL_TRIANGLES, elementSize, GL_UNSIGNED_INT, NULL);
 
-	ModelMat = rotation * glm::translate(glm::vec3(0, 0.25f, 0)) *
-		glm::scale(glm::vec3(0.5f, 0.75f, 0.25f));
-	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(ModelMat));
+	ModelMat = rotation *  translate( vec3(0, 0.25f, 0)) *
+		 scale( vec3(0.5f, 0.75f, 0.25f));
+	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE,  value_ptr(ModelMat));
 	glDrawElements(GL_TRIANGLES, elementSize, GL_UNSIGNED_INT, NULL);
 
-	ModelMat = rotation * glm::translate(glm::vec3(-0.375f, 0.375f, 0)) *
-		glm::scale(glm::vec3(0.15f, 0.5f, .15f));
-	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(ModelMat));
+	ModelMat = rotation *  translate( vec3(-0.375f, 0.375f, 0)) *
+		 scale( vec3(0.15f, 0.5f, .15f));
+	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE,  value_ptr(ModelMat));
 	glDrawElements(GL_TRIANGLES, elementSize, GL_UNSIGNED_INT, NULL);
 
-	ModelMat = rotation * glm::translate(glm::vec3(0.375f, 0.375f, 0)) *
-		glm::scale(glm::vec3(0.15f, .5f, .15f));
-	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(ModelMat));
+	ModelMat = rotation *  translate( vec3(0.375f, 0.375f, 0)) *
+		 scale( vec3(0.15f, .5f, .15f));
+	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE,  value_ptr(ModelMat));
 	glDrawElements(GL_TRIANGLES, elementSize, GL_UNSIGNED_INT, NULL);
 
-	ModelMat = rotation * glm::translate(glm::vec3(-0.15f, -0.375f, 0)) *
-		glm::scale(glm::vec3(0.2f, .5f, .2f));
-	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(ModelMat));
+	ModelMat = rotation *  translate( vec3(-0.15f, -0.375f, 0)) *
+		 scale( vec3(0.2f, .5f, .2f));
+	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE,  value_ptr(ModelMat));
 	glDrawElements(GL_TRIANGLES, elementSize, GL_UNSIGNED_INT, NULL);
 
-	ModelMat = rotation * glm::translate(glm::vec3(0.15f, -0.375f, 0)) *
-		glm::scale(glm::vec3(0.2f, .5f, .2f));
-	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE, glm::value_ptr(ModelMat));
+	ModelMat = rotation *  translate( vec3(0.15f, -0.375f, 0)) *
+		 scale( vec3(0.2f, .5f, .2f));
+	glUniformMatrix4fv(modelMatLoc, 1, GL_FALSE,  value_ptr(ModelMat));
 	glDrawElements(GL_TRIANGLES, elementSize, GL_UNSIGNED_INT, NULL);
 }
 
