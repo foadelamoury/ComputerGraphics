@@ -65,14 +65,11 @@ void CreateTriangle()
 
 	}
 
-	// create buffer object
 	glGenBuffers(1, &VBO);
 
-	// binding buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(TriangleVertices), TriangleVertices, GL_STATIC_DRAW);
 	
-	// shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 0, 0);
 	glEnableVertexAttribArray(0);
 
@@ -88,14 +85,11 @@ void CreateColoredTriangle()
 		0,1,0,1,0,0
 	};
 
-	// create buffer object
 	glGenBuffers(1, &VBO);
 
-	// binding buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(TriangleVertices), TriangleVertices, GL_STATIC_DRAW);
 
-	// shader
 	glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(GL_FLOAT), 0);
 	glEnableVertexAttribArray(0);
 
@@ -164,7 +158,6 @@ void Render()
 float theta = 0;
 void Update()
 {
-	// add all tick code
 	theta += 0.0001f;
 
 	GLuint Theta_Location = glGetUniformLocation(BasiceprogramId, "theta");
