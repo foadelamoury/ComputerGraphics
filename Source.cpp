@@ -221,23 +221,23 @@
 	float theta = 0;
 
 #pragma region Camera Variables
-	glm::vec3 cameraPos(0.0f, 0.0f, 3.0f);
-	glm::vec3 cameraFront(0.0f, 0.0f, -1.0f);
-	glm::vec3 cameraUp(0.0f, 1.0f, 0.0f);
+	 vec3 cameraPos(0.0f, 0.0f, 3.0f);
+	 vec3 cameraFront(0.0f, 0.0f, -1.0f);
+	 vec3 cameraUp(0.0f, 1.0f, 0.0f);
 	float cY = -90.f;
 #pragma endregion
 
 
 	void Update() {
 		
-		glm::vec3 front;
-		front.x = cos(glm::radians(cY));
+		 vec3 front;
+		front.x = cos( radians(cY));
 		front.y = 0; 
-		front.z = sin(glm::radians(cY));
-		cameraFront = glm::normalize(front);
+		front.z = sin( radians(cY));
+		cameraFront =  normalize(front);
 
-		glm::mat4 viewMat = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-		glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE, glm::value_ptr(viewMat));
+		 mat4 viewMat =  lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+		glUniformMatrix4fv(viewMatLoc, 1, GL_FALSE,  value_ptr(viewMat));
 	}
 
 
@@ -359,9 +359,9 @@
 					else if (event.key.code == sf::Keyboard::S) 
 					{ cameraPos -= 0.05f * cameraFront; }
 					else if (event.key.code == sf::Keyboard::A) 
-					{ cameraPos -= glm::normalize(glm::cross(cameraFront, cameraUp)) * 0.05f; }
+					{ cameraPos -=  normalize( cross(cameraFront, cameraUp)) * 0.05f; }
 					else if (event.key.code == sf::Keyboard::D) 
-					{ cameraPos += glm::normalize(glm::cross(cameraFront, cameraUp)) * 0.05f; }
+					{ cameraPos +=  normalize( cross(cameraFront, cameraUp)) * 0.05f; }
 					else if (event.key.code == sf::Keyboard::Q) {
 						cY -= 1.0f; 
 					}
